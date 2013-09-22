@@ -1,3 +1,6 @@
+import com.alibaba.fastjson.parser.deserializer.JavaBeanDeserializer
+import com.alibaba.fastjson.serializer.JSONSerializerMap
+import com.alibaba.fastjson.{JSON, JSONObject}
 import com.google.gson._
 import java.lang.reflect.Type
 
@@ -42,7 +45,16 @@ object parse {
   def main(args: Array[String]) {
 
     val temp = ""","timestamp":"20130918 15:03:12.0","ticker":"XSHG.000001","totalTradeValue":1.01333e+11,"totalTradeQuantity":115111887,"tradePrice":2191.85,"exchangeCode":"XSHG"}"""
-    val mess = "[" + (1 to 10000).map("""{"securityId":""" + _ + temp).mkString(",") + "]"
+    val mess = "[" + (1 to 100000).map("""{"securityId":""" + _ + temp).mkString(",") + "]"
+
+    val start = System.currentTimeMillis()
+    val fdata = JSON.parseObject(mess, classOf[Array[MarketData]])
+    val end = System.currentTimeMillis()
+    println("fastjson: " + (end - start) + " size: " + fdata.size)
+    println(fdata.apply(100000-1))
+
+
+
 
     val builder = new GsonBuilder
     builder.registerTypeAdapter(classOf[LocalDateTime], new LocalDateTimeSerializer)
@@ -51,9 +63,13 @@ object parse {
     builder.registerTypeAdapter(classOf[BigDecimal], new BigDecimalDeserializer)
 
     val gson = builder.create()
-    val data = gson.fromJson(mess, classOf[Array[MarketData]])
 
-    data.foreach(println)
+    val start2 = System.currentTimeMillis()
+    val data = gson.fromJson(mess, classOf[Array[MarketData]])
+    val end2 = System.currentTimeMillis()
+
+    println("gson: " + (end2 - start2) + " size: " + data.size)
+    println(data.apply(100000-1))
   }
 
 }
