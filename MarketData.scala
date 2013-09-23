@@ -1,3 +1,4 @@
+import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
 
 /**
@@ -9,59 +10,34 @@ import java.math.BigDecimal
  */
 class MarketData {
 
-  private var securityId: Long = 0
-  private var timestamp: String = "19000101 00:00:00.000"
-  private var ticker: String = "default ticker"
-  private var totalTradeValue: BigDecimal = new BigDecimal(0)
-  private var totalTradeQuantity: BigDecimal = new  BigDecimal(0)
-  private var tradePrice: BigDecimal = new BigDecimal(0)
-  private var exchangeCode: String = "default code"
+  @SerializedName("XSHG")
+  private var metaDataXSHG: MetaData = null
 
-  /*
-  def this() = {
-    this(
-      0,
-      new LocalDateTime("19000101 00:00:00.000"),
-      "default ticker",
-      BigDecimal(0),
-      BigDecimal(0),
-      BigDecimal(0),
-      "default code")
-  }
-  */
+  @SerializedName("XSHE")
+  private var metaDataXSHE: MetaData = null
 
-  def getSecurityId = {securityId}
+  def getMetaDataXSHG = metaDataXSHG
 
-  def setSecurityId(securityId: Long) = {this.securityId = securityId}
+  def setMetaDataXSHG(metaDataXSHG: MetaData) = {this.metaDataXSHG = metaDataXSHG}
 
-  def getTimestamp = {timestamp}
+  def getMetaDataXSHE = metaDataXSHE
 
-  def setTimestamp(timestamp: String) = {this.timestamp = timestamp}
-
-  def getTicker = {ticker}
-
-  def setTicker(ticker: String) = {this.ticker = ticker}
-
-  def getTotalTradeValue = {totalTradeValue}
-
-  def setTotalTradeValue(totalTradeValue: BigDecimal) = {this.totalTradeValue = totalTradeValue}
-
-  def getTotalTradeQuantity = {totalTradeQuantity}
-
-  def setTotalTradeQuantity(totalTradeQuantity: BigDecimal) = {this.totalTradeQuantity = totalTradeQuantity}
-
-  def getTradePrice = {tradePrice}
-
-  def setTradePrice(tradePrice: BigDecimal) = {this.tradePrice = tradePrice}
-
-  def getExchangeCode = {exchangeCode}
-
-  def setExchangeCode(exchangeCode: String) = {this.exchangeCode = exchangeCode}
+  def setMetaDataXSHE(metaDataXSHE: MetaData) = {this.metaDataXSHE = metaDataXSHE}
 
   override def toString = {
-    "MarketData { securityId: " + securityId + " timestamp: " + timestamp + " ticker: " + ticker +
-    " totalTradeValue: " + totalTradeValue + " totalTradeQuantity: " + totalTradeQuantity + " tradePrice: " +
-    tradePrice + " exchangeCode: " + exchangeCode + "}"
+    val metaXSHG = if(metaDataXSHG != null) {
+      metaDataXSHG.toString + " "
+    }
+    else {
+      ""
+    }
+    val metaXSHE = if(metaDataXSHE != null) {
+      metaDataXSHE.toString + " "
+    }
+    else {
+      ""
+    }
+    "MarketData: " + metaXSHG + metaXSHE
   }
 
 }

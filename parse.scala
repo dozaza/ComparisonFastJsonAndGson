@@ -44,14 +44,18 @@ object parse {
 
   def main(args: Array[String]) {
 
+    val test =
+      """{"XSHG": {"securityId":1, "timestamp":"20130918 15:03:12.0","ticker":"XSHG.000001","totalTradeValue":1.01333e+11,"totalTradeQuantity":115111887,"tradePrice":2191.85,"exchangeCode":"XSHG"},""" +
+         """"XSHE": {"securityId":2, "timestamp":"20130918 15:03:12.0","ticker":"XSHG.000001","totalTradeValue":1.01333e+11,"totalTradeQuantity":115111887,"tradePrice":2191.85,"exchangeCode":"XSHE"}}"""
+
     val temp = ""","timestamp":"20130918 15:03:12.0","ticker":"XSHG.000001","totalTradeValue":1.01333e+11,"totalTradeQuantity":115111887,"tradePrice":2191.85,"exchangeCode":"XSHG"}"""
-    val mess = "[" + (1 to 100000).map("""{"securityId":""" + _ + temp).mkString(",") + "]"
+    val mess = "[" + (1 to 6000).map("""{"securityId":""" + _ + temp).mkString(",") + "]"
 
     val start = System.currentTimeMillis()
-    val fdata = JSON.parseObject(mess, classOf[Array[MarketData]])
+    //val fdata = JSON.parseObject(mess, classOf[Array[MarketData]])
     val end = System.currentTimeMillis()
-    println("fastjson: " + (end - start) + " size: " + fdata.size)
-    println(fdata.apply(100000-1))
+    //println("fastjson: " + (end - start) + " size: " + fdata.size)
+    //println(fdata.apply(6000-1))
 
 
 
@@ -65,11 +69,16 @@ object parse {
     val gson = builder.create()
 
     val start2 = System.currentTimeMillis()
-    val data = gson.fromJson(mess, classOf[Array[MarketData]])
+    //val data = gson.fromJson(mess, classOf[Array[MarketData]])
     val end2 = System.currentTimeMillis()
 
-    println("gson: " + (end2 - start2) + " size: " + data.size)
-    println(data.apply(100000-1))
+    println(test)
+    val data = gson.fromJson(test, classOf[MarketData])
+
+    println("new gson: " + data)
+
+    //println("gson: " + (end2 - start2) + " size: " + data.size)
+    //println(data.apply(6000-1))
   }
 
 }
